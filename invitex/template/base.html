@@ -1,7 +1,14 @@
+{% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Site invitex</title>
+        <title>
+            {% block title %}
+            Site invitex
+            {% endblock %}
+        </title>
+    {%  block head %}
         <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
         <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
         <link rel="stylesheet" type="text/css" href="/static/admin/css/wigets.css">
@@ -11,43 +18,65 @@
         <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
         <meta name="robots" content="NONE,NOARCHIVE">
     </head>
+    {% endblock %}
     <body class=" dashboard">
         <div id="container">
-            <!-- Header -->
+            {% block header %}
             <div id="header">
                 <div id="branding">
                     <h1 id="site-name">
                         <a href="/">Invitex</a>
                     </h1>
                 </div>
-                <div id="user-tools">Welcome,
-                    <strong>a10</strong>
-                    .
                     <a href="/">View site</a>
-                    /
-                    <a href="/admin/">administration</a>
-                    <a href="/admin/password_change/">Change password</a>
-                    /
-                    <a href="/admin/logout/">Log out</a>
+                <div id="user-tools">
+                    {% if not user.is_anonymous %}
+                    Welcome,
+                    <strong>{{ user.username }}</strong>.
+                        <a href="{% url 'admin:index' %}">
+                            Admin panel
+                        </a>
+                        <a href="{% url 'admin:password_change' %}">
+                            Admin password change
+                        </a>
+                        <a href="{% url 'admin:logout' %}">
+                            Admin logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'admin:login' %}">
+                            Admin login
+                        </a>
+                    {% endif %}
+                </div>
                 </div>
             </div>
+            {% endblock %}
             <div class="main shifted" id="main">
                 <div class="content">
-                    <!-- Content -->
+                    {% block content %}
                     <div id="content" class="colMS">
                         <div id="content-main">
                             <div class="app-auth module">
-                                <div id="root">Hi!</div>
+                                <div id="root">
+<!--
+                                Hi!
+-->
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {% endblock %}
                 </div>
             </div>
+            {% block content_related %}
+<!--
             <div id="content-related">
                 <div class="module" id="recent-actions-module">
                     <h2>Wellcome!</h2>
                 </div>
             </div>
+-->
+            {% endblock %}
             <div id="footer">
         </div>
         </div>
